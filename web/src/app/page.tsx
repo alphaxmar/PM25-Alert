@@ -81,6 +81,9 @@ export default function Home() {
         </button>
       )}
       <Banner aqi={aqi} />
+      <div style={{ marginTop: 32, textAlign: "center", fontSize: 12, color: "#666" }}>
+        Last updated: {new Date().toLocaleDateString('th-TH', { timeZone: 'Asia/Bangkok' })}
+      </div>
     </div>
   );
 }
