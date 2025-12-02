@@ -6,15 +6,17 @@ import Banner from "@/components/Banner";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const p = provinces.find((x) => x.slug === params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const p = provinces.find((x) => x.slug === resolvedParams.slug);
   const title = p ? `ค่าฝุ่น PM2.5 จังหวัด${p.nameTh} วันนี้` : "ค่าฝุ่น PM2.5";
   const description = p ? `เช็คค่าฝุ่น PM2.5 ${p.nameTh} แบบเรียลไทม์ พร้อมคำแนะนำสุขภาพ` : "ตรวจคุณภาพอากาศแบบเรียลไทม์";
   return { title, description };
 }
 
-export default async function ProvincePage({ params }: { params: { slug: string } }) {
-  const p = provinces.find((x) => x.slug === params.slug);
+export default async function ProvincePage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const p = provinces.find((x) => x.slug === resolvedParams.slug);
   if (!p) return <div style={{ padding: 24 }}>ไม่พบจังหวัด</div>;
 
   const data = await fetchProvinceAQI(p.keyword);
