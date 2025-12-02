@@ -1,4 +1,5 @@
 name = "pm25-alert-web"
+account_id = "f371479270f8b0aa9b4a15eca3af4b49"
 main = ".open-next/worker.js"
 compatibility_date = "2025-03-25"
 compatibility_flags = ["nodejs_compat"]
