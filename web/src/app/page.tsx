@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { aqiToThaiCategory } from "@/lib/aqi";
 import { initLiff, closeWindow } from "@/lib/liff";
 import Banner from "@/components/Banner";
@@ -63,6 +64,14 @@ export default function Home() {
         <p>กำลังค้นหาพิกัดและดึงข้อมูลคุณภาพอากาศ...</p>
       )}
       {error && <p style={{ color: "#c00" }}>{error}</p>}
+      <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
+        <Link href="/dashboard" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>
+          ดูสถานการณ์ทั่วประเทศ
+        </Link>
+        <Link href="/province/bangkok" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>
+          ดูข้อมูลกรุงเทพฯ
+        </Link>
+      </div>
       {isInClient && (
         <button
           onClick={closeWindow}
