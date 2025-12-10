@@ -27,7 +27,7 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Prompt', sans-serif;
+  font-family: var(--font-prompt), 'Prompt', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import "@fontsource/prompt/400.css";
-import "@fontsource/prompt/500.css";
-import "@fontsource/prompt/600.css";
-import "@fontsource/prompt/700.css";
+import { Prompt } from "next/font/google";
 import "./globals.css";
+
+const prompt = Prompt({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["thai", "latin"],
+  variable: "--font-prompt",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "ตรวจค่าฝุ่น PM2.5 แบบเรียลไทม์",
@@ -17,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="th">
-      <body>
+      <body className={prompt.variable}>
         {children}
       </body>
     </html>
