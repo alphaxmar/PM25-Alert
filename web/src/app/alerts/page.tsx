@@ -1,5 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
+import AlertsButton from "@/components/AlertsButton";
 
 export const metadata: Metadata = {
   title: "แจ้งเตือนคุณภาพอากาศรายวัน",
@@ -19,9 +20,7 @@ export default function AlertsPage() {
         <li>สามารถหยุดรับแจ้งเตือนได้ทุกเมื่อ</li>
       </ul>
       <div style={{ marginTop: 24 }}>
-        <a href="#" style={{ padding: "10px 16px", borderRadius: 8, background: "#06c755", color: "#fff" }}>
-          เปิดใช้งานผ่าน LINE
-        </a>
+        <AlertsButton />
       </div>
     </div>
   );

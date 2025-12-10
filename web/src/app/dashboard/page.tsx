@@ -62,12 +62,12 @@ export default async function DashboardPage() {
                 alignItems: "center", 
                 justifyContent: "space-between",
                 padding: "16px 24px",
-                borderBottom: index !== ranked.length - 1 ? "1px solid #F0F0F0" : "none",
+                borderBottom: index !== ranked.length - 1 ? "1px solid rgba(0,0,0,0.05)" : "none",
                 textDecoration: "none"
               }}
             >
               <div>
-                <div style={{ fontSize: "0.8rem", color: "#999", marginBottom: 4 }}>
+                <div style={{ fontSize: "0.8rem", color: "var(--secondary)", opacity: 0.8, marginBottom: 4 }}>
                   อันดับ {index + 1} :
                 </div>
                 <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--foreground)" }}>
@@ -87,7 +87,7 @@ export default async function DashboardPage() {
                 }}>
                   {r.aqi}
                 </div>
-                <div style={{ fontSize: "0.9rem", color: "#999", width: 40 }}>
+                <div style={{ fontSize: "0.9rem", color: "var(--secondary)", opacity: 0.8, width: 40 }}>
                   µg/m³
                 </div>
               </div>

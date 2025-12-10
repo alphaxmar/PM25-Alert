@@ -99,7 +99,7 @@ export default function Home() {
           <div style={{ fontSize: "1.125rem", fontWeight: 500, marginBottom: 8, color: "var(--secondary)" }}>
             {city}
           </div>
-          <div style={{ fontSize: "0.875rem", color: "#999", marginBottom: 16 }}>
+          <div style={{ fontSize: "0.875rem", color: "var(--secondary)", opacity: 0.8, marginBottom: 16 }}>
             {currentDate}
           </div>
           
@@ -111,7 +111,7 @@ export default function Home() {
               <div style={{ fontSize: "4rem", fontWeight: 700, lineHeight: 1, color: category.color }}>
                 {aqi}
               </div>
-              <div style={{ fontSize: "0.875rem", color: "#999" }}>µg/m³</div>
+              <div style={{ fontSize: "0.875rem", color: "var(--secondary)", opacity: 0.8 }}>µg/m³</div>
             </div>
           </div>
 
@@ -128,11 +128,11 @@ export default function Home() {
           </div>
           
           <div style={{ 
-            background: "#F5F5F5", 
+            background: "rgba(0,0,0,0.03)", 
             padding: "12px", 
             borderRadius: 12, 
             fontSize: "0.9rem",
-            color: "#555"
+            color: "var(--foreground)"
           }}>
             {category.advice}
           </div>
