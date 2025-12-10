@@ -12,28 +12,95 @@ export default async function DashboardPage() {
       return { slug: p.slug, nameTh: p.nameTh, aqi: res.aqi };
     })
   );
+  
+  // Sort descending by AQI
   const ranked = results
     .filter((r) => r.aqi != null)
     .sort((a, b) => (b.aqi as number) - (a.aqi as number))
     .slice(0, 20);
 
+  const dateStr = new Date().toLocaleDateString('th-TH', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric',
+    timeZone: 'Asia/Bangkok'
+  });
+  
+  const timeStr = new Date().toLocaleTimeString('th-TH', { 
+    hour: '2-digit', 
+    minute: '2-digit',
+    timeZone: 'Asia/Bangkok'
+  });
+
   return (
-    <div style={{ padding: 24 }}>
-      <h1>สถานการณ์ฝุ่นทั่วไทย</h1>
-      <p>จัดอันดับ 20 จังหวัดที่อากาศแย่สุด</p>
-      <ul>
-        {ranked.map((r) => {
+    <div style={{ padding: "24px 16px", maxWidth: 600, margin: "0 auto" }}>
+      <div style={{ textAlign: "center", marginBottom: 24 }}>
+        <h1 style={{ fontSize: "1.25rem", color: "var(--foreground)", marginBottom: 8 }}>
+          (ค่าเฉลี่ยรายชั่วโมง)
+        </h1>
+        <h2 style={{ fontSize: "1.5rem", color: "var(--foreground)", marginBottom: 8 }}>
+          ปริมาณฝุ่นรายจังหวัด
+        </h2>
+        <div style={{ color: "var(--secondary)", fontSize: "0.9rem" }}>
+          {dateStr}
+        </div>
+        <div style={{ color: "var(--secondary)", fontSize: "0.9rem" }}>
+          เวลา {timeStr} น.
+        </div>
+      </div>
+
+      <div className="card" style={{ padding: "16px 0", overflow: "hidden" }}>
+        {ranked.map((r, index) => {
           const cat = aqiToThaiCategory(r.aqi as number);
           return (
-            <li key={r.slug} style={{ marginBottom: 8 }}>
-              <Link href={`/province/${r.slug}`}>{r.nameTh}</Link>{" "}
-              <span style={{ background: cat.color, color: "#fff", padding: "2px 6px", borderRadius: 6, marginLeft: 8 }}>
-                {r.aqi}
-              </span>
-            </li>
+            <Link 
+              key={r.slug} 
+              href={`/province/${r.slug}`}
+              style={{ 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "space-between",
+                padding: "16px 24px",
+                borderBottom: index !== ranked.length - 1 ? "1px solid #F0F0F0" : "none",
+                textDecoration: "none"
+              }}
+            >
+              <div>
+                <div style={{ fontSize: "0.8rem", color: "#999", marginBottom: 4 }}>
+                  อันดับ {index + 1} :
+                </div>
+                <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--foreground)" }}>
+                  {r.nameTh}
+                </div>
+              </div>
+              
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <div style={{ 
+                  background: cat.color, 
+                  color: "#fff", 
+                  padding: "6px 16px", 
+                  borderRadius: 20, 
+                  fontWeight: 700,
+                  minWidth: 70,
+                  textAlign: "center"
+                }}>
+                  {r.aqi}
+                </div>
+                <div style={{ fontSize: "0.9rem", color: "#999", width: 40 }}>
+                  µg/m³
+                </div>
+              </div>
+            </Link>
           );
         })}
-      </ul>
+      </div>
+      
+      <div style={{ textAlign: "center", marginTop: 24 }}>
+        <Link href="/" className="btn btn-outline">
+          กลับหน้าหลัก
+        </Link>
+      </div>
     </div>
   );
 }
