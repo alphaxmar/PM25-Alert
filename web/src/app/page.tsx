@@ -22,6 +22,12 @@ export default function Home() {
   const router = useRouter();
   const [compact, setCompact] = useState(false);
 
+  const [currentDate, setCurrentDate] = useState<string>("");
+
+  useEffect(() => {
+    setCurrentDate(new Date().toLocaleDateString('th-TH', { dateStyle: 'long', timeStyle: 'short' }));
+  }, []);
+
   useEffect(() => {
     initLiff().then((info) => {
       if (info && info.loggedIn && info.displayName) setGreet(`สวัสดี ${info.displayName}`);
@@ -85,7 +91,7 @@ export default function Home() {
             {city}
           </div>
           <div style={{ fontSize: "0.875rem", color: "#999", marginBottom: 16 }}>
-            {new Date().toLocaleDateString('th-TH', { dateStyle: 'long', timeStyle: 'short' })}
+            {currentDate}
           </div>
           
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 16, marginBottom: 16 }}>
