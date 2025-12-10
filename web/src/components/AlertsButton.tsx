@@ -8,8 +8,8 @@ export default function AlertsButton() {
 
   useEffect(() => {
     // In a real app, this should be an env var like process.env.NEXT_PUBLIC_LINE_OA_URL
-    // For now, we'll use a placeholder or the user needs to set it.
-    const oaUrl = process.env.NEXT_PUBLIC_LINE_OA_URL || "https://line.me/R/ti/p/@pm25alert";
+    // For now, we'll use the provided LINE OA URL.
+    const oaUrl = process.env.NEXT_PUBLIC_LINE_OA_URL || "https://lin.ee/AN1qObp";
     setUrl(oaUrl);
   }, []);
 
