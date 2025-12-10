@@ -2,27 +2,33 @@
 
 import React, { useEffect, useState } from "react";
 import liff from "@line/liff";
+import { initLiff } from "@/lib/liff";
 
-export default function AlertsButton() {
+export default function AlertsButton({ province }: { province?: string }) {
   const [url, setUrl] = useState<string>("#");
+  const [inClient, setInClient] = useState(false);
 
   useEffect(() => {
-    // In a real app, this should be an env var like process.env.NEXT_PUBLIC_LINE_OA_URL
-    // For now, we'll use the provided LINE OA URL.
     const oaUrl = process.env.NEXT_PUBLIC_LINE_OA_URL || "https://lin.ee/AN1qObp";
     setUrl(oaUrl);
+    initLiff().then((info) => {
+      if (info?.isInClient) setInClient(true);
+    });
   }, []);
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (url === "#") return;
 
-    // Check if running in LIFF
-    if (liff.isInClient()) {
-      liff.openWindow({
-        url: url,
-        external: true,
-      });
+    if (inClient) {
+      try {
+        if (province) {
+          await liff.sendMessages([{ type: "text", text: `Subscribe ${province}` }]);
+        }
+      } catch {}
+      try {
+        liff.openWindow({ url, external: true });
+      } catch {}
     } else {
       window.open(url, "_blank");
     }
@@ -36,7 +42,7 @@ export default function AlertsButton() {
         display: "inline-block",
         padding: "12px 24px",
         borderRadius: 8,
-        background: "#06c755", // LINE Green
+        background: "#06c755",
         color: "#fff",
         fontWeight: "bold",
         textDecoration: "none",

@@ -42,7 +42,7 @@ export default function AlertsPage() {
       </div>
 
       <div style={{ marginTop: 0 }}>
-        <AlertsButton />
+        <AlertsButton province={selectedProvince || undefined} />
         {selectedProvince && (
           <p style={{ marginTop: 12, fontSize: "0.9rem", color: "var(--secondary)" }}>
             * ระบบจะบันทึกการตั้งค่าสำหรับ <strong>{selectedProvince}</strong> หลังจากที่คุณเพิ่มเพื่อนใน LINE
