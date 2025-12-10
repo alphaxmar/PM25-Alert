@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { provinces } from "@/data/provinces";
 import { aqiToThaiCategory } from "@/lib/aqi";
-import { initLiff, closeWindow, login, openHalfView } from "@/lib/liff";
+import { initLiff, closeWindow, login, openHalfView, openFullView } from "@/lib/liff";
 import Banner from "@/components/Banner";
 
 type AirResponse = {
@@ -56,7 +56,9 @@ export default function Home() {
   useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
-      if (params.get("view") === "half") setCompact(true);
+      const v = params.get("view");
+      if (v === "half") setCompact(true);
+      if (v === "full") setCompact(false);
     } catch {}
   }, []);
 
@@ -90,12 +92,20 @@ export default function Home() {
           </select>
         </div>
         )}
-        <button
-          onClick={() => (isInClient ? openHalfView() : setCompact(true))}
-          style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid #06c755", color: "#06c755", background: "#fff" }}
-        >
-          เปิดโหมด Half view
-        </button>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button
+            onClick={() => (isInClient ? openHalfView() : setCompact(true))}
+            style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid #06c755", color: "#06c755", background: "#fff" }}
+          >
+            Half view
+          </button>
+          <button
+            onClick={() => (isInClient ? openFullView() : setCompact(false))}
+            style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid #06c755", color: "#06c755", background: "#fff" }}
+          >
+            Full view
+          </button>
+        </div>
       </div>
       {greet && <p>{greet}</p>}
       <div style={{ marginTop: 12, display: "flex", gap: 12, flexWrap: "wrap" }}>

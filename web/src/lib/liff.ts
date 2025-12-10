@@ -46,3 +46,10 @@ export function openHalfView() {
     liff.openWindow({ url, external: false });
   } catch {}
 }
+
+export function openFullView() {
+  try {
+    const url = window.location.origin + "?view=full";
+    liff.openWindow({ url, external: false });
+  } catch {}
+}
