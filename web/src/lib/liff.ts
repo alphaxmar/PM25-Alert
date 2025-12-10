@@ -33,3 +33,9 @@ export async function initLiff(): Promise<LiffInfo | null> {
 export function closeWindow() {
   if (liff.isInClient()) liff.closeWindow();
 }
+
+export function login() {
+  try {
+    liff.login();
+  } catch {}
+}

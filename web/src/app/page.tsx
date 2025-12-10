@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { provinces } from "@/data/provinces";
 import { aqiToThaiCategory } from "@/lib/aqi";
-import { initLiff, closeWindow } from "@/lib/liff";
+import { initLiff, closeWindow, login } from "@/lib/liff";
 import Banner from "@/components/Banner";
 
 type AirResponse = {
@@ -18,12 +18,14 @@ export default function Home() {
   const [error, setError] = useState<string>("");
   const [greet, setGreet] = useState<string>("");
   const [isInClient, setIsInClient] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     initLiff().then((info) => {
       if (info && info.loggedIn && info.displayName) setGreet(`สวัสดี ${info.displayName}`);
       if (info?.isInClient) setIsInClient(true);
+      if (info) setIsLoggedIn(info.loggedIn);
     });
 
     if (!navigator.geolocation) return;
@@ -80,6 +82,15 @@ export default function Home() {
         </div>
       </div>
       {greet && <p>{greet}</p>}
+      <div style={{ marginTop: 12, display: "flex", gap: 12, flexWrap: "wrap" }}>
+        <Link href="/alerts" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>แจ้งเตือนรายวัน</Link>
+        <Link href="/guide" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>คำแนะนำสุขภาพ</Link>
+        {!isLoggedIn && (
+          <button onClick={login} style={{ padding: "8px 12px", border: "1px solid #06c755", color: "#06c755", background: "#fff", borderRadius: 8 }}>
+            เข้าสู่ระบบ LINE
+          </button>
+        )}
+      </div>
       {aqi != null && category ? (
         <div style={{ borderRadius: 12, padding: 16, background: category.color, color: "#fff" }}>
           <div style={{ fontSize: 48, fontWeight: 700 }}>{aqi}</div>
