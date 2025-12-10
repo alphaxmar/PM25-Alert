@@ -8,3 +8,6 @@ compatibility_flags = ["nodejs_compat"]
 directory = ".open-next/assets"
 binding = "ASSETS"
 
+[[kv_namespaces]]
+binding = "SUBSCRIPTIONS"
+id = "734a1dda1e82492dbc55cef9bf9052d6"
