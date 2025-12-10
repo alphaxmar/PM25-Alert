@@ -39,3 +39,10 @@ export function login() {
     liff.login();
   } catch {}
 }
+
+export function openHalfView() {
+  try {
+    const url = window.location.origin + "?view=half";
+    liff.openWindow({ url, external: false });
+  } catch {}
+}

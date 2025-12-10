@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { provinces } from "@/data/provinces";
 import { aqiToThaiCategory } from "@/lib/aqi";
-import { initLiff, closeWindow, login } from "@/lib/liff";
+import { initLiff, closeWindow, login, openHalfView } from "@/lib/liff";
 import Banner from "@/components/Banner";
 
 type AirResponse = {
@@ -20,6 +20,7 @@ export default function Home() {
   const [isInClient, setIsInClient] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const [compact, setCompact] = useState(false);
 
   useEffect(() => {
     initLiff().then((info) => {
@@ -52,10 +53,17 @@ export default function Home() {
     );
   }, []);
 
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("view") === "half") setCompact(true);
+    } catch {}
+  }, []);
+
   const category = aqi != null ? aqiToThaiCategory(aqi) : null;
 
   return (
-    <div style={{ padding: 24, maxWidth: 720, margin: "0 auto" }}>
+    <div style={{ padding: compact ? 12 : 24, maxWidth: 720, margin: "0 auto" }}>
       <h1>ตรวจค่าฝุ่น PM2.5</h1>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
         <Link href="/" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>หน้าแรก</Link>
@@ -64,6 +72,7 @@ export default function Home() {
         <Link href="/province/chiang-mai" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>เชียงใหม่</Link>
         <Link href="/province/khon-kaen" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>ขอนแก่น</Link>
         <Link href="/province/phuket" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>ภูเก็ต</Link>
+        {!compact && (
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 14 }}>เลือกจังหวัด:</span>
           <select
@@ -80,6 +89,13 @@ export default function Home() {
             ))}
           </select>
         </div>
+        )}
+        <button
+          onClick={() => (isInClient ? openHalfView() : setCompact(true))}
+          style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid #06c755", color: "#06c755", background: "#fff" }}
+        >
+          เปิดโหมด Half view
+        </button>
       </div>
       {greet && <p>{greet}</p>}
       <div style={{ marginTop: 12, display: "flex", gap: 12, flexWrap: "wrap" }}>
