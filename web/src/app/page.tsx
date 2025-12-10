@@ -25,7 +25,12 @@ export default function Home() {
   const [currentDate, setCurrentDate] = useState<string>("");
 
   useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString('th-TH', { dateStyle: 'long', timeStyle: 'short' }));
+    try {
+      const s = new Intl.DateTimeFormat('th-TH', { dateStyle: 'long', timeStyle: 'short' }).format(new Date());
+      setCurrentDate(s);
+    } catch {
+      setCurrentDate(new Date().toLocaleString('th-TH'));
+    }
   }, []);
 
   useEffect(() => {
@@ -38,19 +43,23 @@ export default function Home() {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
-        const lat = pos.coords.latitude.toFixed(3);
-        const lon = pos.coords.longitude.toFixed(3);
-        const res = await fetch(`/api/air?lat=${lat}&lon=${lon}`);
-        if (!res.ok) {
-          setError("ไม่สามารถดึงข้อมูลได้");
-          return;
-        }
-        const json: AirResponse = await res.json();
-        if (json.status === "ok" && json.data) {
-          setAqi(json.data.aqi);
-          setCity(json.data.city?.name || "พิกัดปัจจุบัน");
-        } else {
-          setError("ไม่พบข้อมูลพื้นที่นี้");
+        try {
+          const lat = pos.coords.latitude.toFixed(3);
+          const lon = pos.coords.longitude.toFixed(3);
+          const res = await fetch(`/api/air?lat=${lat}&lon=${lon}`, { cache: "no-store" });
+          if (!res.ok) {
+            setError("ไม่สามารถดึงข้อมูลได้");
+            return;
+          }
+          const json: AirResponse = await res.json();
+          if (json.status === "ok" && json.data) {
+            setAqi(json.data.aqi);
+            setCity(json.data.city?.name || "พิกัดปัจจุบัน");
+          } else {
+            setError("ไม่พบข้อมูลพื้นที่นี้");
+          }
+        } catch {
+          setError("เกิดข้อผิดพลาดในการเชื่อมต่อ");
         }
       },
       () => {
