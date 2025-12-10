@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { provinces } from "@/data/provinces";
 import { aqiToThaiCategory } from "@/lib/aqi";
 import { initLiff, closeWindow } from "@/lib/liff";
 import Banner from "@/components/Banner";
@@ -16,6 +18,7 @@ export default function Home() {
   const [error, setError] = useState<string>("");
   const [greet, setGreet] = useState<string>("");
   const [isInClient, setIsInClient] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     initLiff().then((info) => {
@@ -52,6 +55,30 @@ export default function Home() {
   return (
     <div style={{ padding: 24, maxWidth: 720, margin: "0 auto" }}>
       <h1>ตรวจค่าฝุ่น PM2.5</h1>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
+        <Link href="/" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>หน้าแรก</Link>
+        <Link href="/dashboard" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>สถานการณ์ทั่วประเทศ</Link>
+        <Link href="/province/bangkok" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>กรุงเทพฯ</Link>
+        <Link href="/province/chiang-mai" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>เชียงใหม่</Link>
+        <Link href="/province/khon-kaen" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>ขอนแก่น</Link>
+        <Link href="/province/phuket" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>ภูเก็ต</Link>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 14 }}>เลือกจังหวัด:</span>
+          <select
+            onChange={(e) => {
+              const slug = e.target.value;
+              if (slug) router.push(`/province/${slug}`);
+            }}
+            defaultValue=""
+            style={{ padding: "8px", borderRadius: 8, border: "1px solid #ddd" }}
+         >
+            <option value="" disabled>เลือกจังหวัดทั้งหมด</option>
+            {provinces.map((p) => (
+              <option key={p.slug} value={p.slug}>{p.nameTh}</option>
+            ))}
+          </select>
+        </div>
+      </div>
       {greet && <p>{greet}</p>}
       {aqi != null && category ? (
         <div style={{ borderRadius: 12, padding: 16, background: category.color, color: "#fff" }}>
@@ -64,14 +91,6 @@ export default function Home() {
         <p>กำลังค้นหาพิกัดและดึงข้อมูลคุณภาพอากาศ...</p>
       )}
       {error && <p style={{ color: "#c00" }}>{error}</p>}
-      <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
-        <Link href="/dashboard" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>
-          ดูสถานการณ์ทั่วประเทศ
-        </Link>
-        <Link href="/province/bangkok" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 8 }}>
-          ดูข้อมูลกรุงเทพฯ
-        </Link>
-      </div>
       {isInClient && (
         <button
           onClick={closeWindow}
